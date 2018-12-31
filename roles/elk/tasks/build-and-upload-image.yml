@@ -1,0 +1,43 @@
+- name: Set up environment variables
+  include: set-vars.yml
+  tags:
+    - set-envs
+
+- name: Build docker image
+  shell: cd {{role_path}}/files && \
+         docker-compose build
+  environment:
+    USER_ID: "{{user_id.stdout}}"
+    GROUP_ID: "{{group_id.stdout}}"
+    DOCKER_GROUP_ID: "{{docker_group_id.stdout}}"
+  delegate_to: localhost
+
+# note this cmd expects credentials to already be saved somewhere
+- name: Logging into docker registry
+  shell: echo $DOCKER_PW | \
+        docker login -u $DOCKER_USER \
+        --password-stdin $DOCKER_URL
+  register: login_success
+  delegate_to: localhost
+  run_once: true
+
+  tags:
+    - login-docker
+
+- debug:
+    msg: "Stdout: {{login_success.stdout}}"
+  failed_when: login_success.stdout != "Login Succeeded"
+  delegate_to: localhost
+  run_once: true
+
+  tags:
+    - login-docker
+
+- name: Upload to repo
+  shell: docker push {{item}}
+  delegate_to: localhost
+  with_items:
+    - "{{es_image}}"
+    - "{{kb_image}}"
+    - "{{ls_image}}"
+

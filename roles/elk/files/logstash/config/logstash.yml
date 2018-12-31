@@ -1,0 +1,13 @@
+# ref: https://github.com/elastic/logstash/blob/master/config/logstash.yml
+
+http.host: "0.0.0.0"
+http.port: 9600
+config.reload.automatic: true
+#============================== Xpack Monitoring ===============================
+
+# ref: https://www.elastic.co/guide/en/logstash/current/persistent-queues.html
+queue.type: persisted
+xpack.monitoring:
+  enabled: true
+  elasticsearch:
+    url: ["http://elasticsearch:9200"]

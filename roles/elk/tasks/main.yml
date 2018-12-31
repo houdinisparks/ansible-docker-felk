@@ -1,0 +1,35 @@
+- name: ensuring directory exists
+  file:
+    path: '{{item.name}}'
+    state: directory
+    owner: "{{remote_user}}"
+    group: "{{remote_user}}"
+    mode: '{{item.mode}}'
+  with_items:
+    - {name: '{{elk_home}}', mode: 'u=rwx,o=rx,g=rx'} # rwx-r-xr-x
+  tags:
+    - create-dirs-elk
+
+- name: Set up environment variables
+  include: set-vars.yml
+  tags:
+    - set-envs
+
+- name: Setup conf files
+  include: elk-conf.yml
+  tags:
+    - update-elk-conf
+
+- name: Template the docker file and run containers
+  include: docker-setup.yml
+
+
+# - name: Remove old containers and images
+#   shell: docker rmi $(docker images 'elasticsearch' -q | tail -n +2)
+#   tags:
+#     - clean
+
+# - name: Remove old containers and images
+#   shell: docker rmi $(docker images 'kibana' -q | tail -n +2)
+#   tags:
+#     - clean

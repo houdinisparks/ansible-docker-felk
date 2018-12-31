@@ -1,0 +1,29 @@
+FROM docker.elastic.co/logstash/logstash:6.5.2
+
+
+ARG USER_ID=1001
+ARG GROUP_ID=1001
+ARG USER=
+ARG GROUP=
+
+USER root
+
+# home env ref: https://www.elastic.co/guide/en/logstash/current/logstash-settings-file.html
+ENV LOGSTASH_HOME=/usr/share/logstash
+ENV LS_HOME=/usr/share/logstash
+
+# configure container permissions
+RUN groupadd -g ${GROUP_ID} ${GROUP} && \
+    useradd -l -u ${USER_ID} -g ${GROUP} ${USER}
+
+# COPY ./logstash.conf .
+# COPY ./patterns .
+
+COPY ./pipeline/ /usr/share/logstash/pipeline/
+COPY ./config/ /usr/share/logstash/config/
+
+RUN chown --no-dereference --recursive ${USER}:${GROUP} \
+        /usr/share/logstash \
+        ./
+
+USER ${USER}

@@ -1,0 +1,22 @@
+- name: Get user id
+  shell: id -u {{ user }}
+  register: user_id
+  tags:
+    - get-ids
+
+- name: Get group id
+  shell: id -g {{ user }}
+  register: group_id
+  tags:
+    - get-ids
+
+- name: Get docker group id
+  shell: 'bash -c "cut -d: -f3 < <(getent group docker)"'
+  register: docker_group_id
+  tags:
+    - get-ids
+
+- debug:
+    msg: "user_id: {{user_id.stdout}}, group_id: {{group_id.stdout}}, docker_group_id: {{docker_group_id.stdout}}"
+  tags:
+    - get-ids

@@ -1,0 +1,36 @@
+- name: Build filebeat images and upload for ror servers
+  hosts: elk-clients
+
+  environment:
+    USER: "{{user}}"
+    GROUP: "{{group}}"
+    DOCKER_PW: "{{lookup('env','DOCKER_PW')}}"
+    DOCKER_USER: "{{lookup('env' , 'DOCKER_USER')}}"
+    DOCKER_URL: "{{lookup('env', 'DOCKER_URL')}}"
+    FILEBEAT_IMAGE: "{{filebeat_image}}"
+
+  tasks:
+    - import_role:
+        name: filebeat
+        tasks_from: build-and-upload-image.yml
+  tags:
+    - build-fb
+
+- name: Build ELK images and upload for minion server
+  hosts: elk
+  environment:
+    USER: "{{user}}"
+    GROUP: "{{group}}"
+    DOCKER_PW: "{{lookup('env','DOCKER_PW')}}"
+    DOCKER_USER: "{{lookup('env' , 'DOCKER_USER')}}"
+    DOCKER_URL: "{{lookup('env', 'DOCKER_URL')}}"
+    ES_IMAGE: "{{es_image}}"
+    LS_IMAGE: "{{ls_image}}"
+    KB_IMAGE: "{{kb_image}}"
+    ELK_HOME: "{{role_path}}/files"
+  tasks:
+    - import_role:
+        name: elk
+        tasks_from: build-and-upload-image.yml
+  tags:
+    - build-elk

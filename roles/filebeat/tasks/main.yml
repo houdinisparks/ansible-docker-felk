@@ -1,0 +1,83 @@
+
+
+- name: Set up environment variables
+  include: set-vars.yml
+  tags:
+    - set-envs
+
+- name: Create filebeat home directory
+  file:
+    path: "{{ filebeat_home }}"
+    mode: u+rwx,o+rx,g+rx
+    owner: "{{user}}"
+    group: "{{group}}"
+    state: directory
+  tags:
+    - create-dirs-fb
+
+- name: Copy over filebeat configuration file
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: u=rwx,o=rx,g=rx
+  with_items:
+    - { src: "{{role_path}}/files/filebeat.yml", dest: "{{ filebeat_home }}/" }
+    - { src: "{{role_path}}/files/docker-compose.yml", dest: "{{ filebeat_home }}/" }
+  notify:
+    - restart docker
+  tags:
+    - update-fb-conf
+
+- debug:
+    msg: "{{ group_names }}"
+  tags:
+    - debug
+
+- name: Logging into docker registry
+  shell: echo $DOCKER_PW | \
+        docker login -u $DOCKER_USER \
+        --password-stdin $DOCKER_URL
+  environment:
+    DOCKER_PW: "{{lookup('env','DOCKER_PW')}}"
+    DOCKER_USER: "{{lookup('env' , 'DOCKER_USER')}}"
+    DOCKER_URL: "{{lookup('env', 'DOCKER_URL')}}"
+  register: login_success
+
+  tags:
+    - login-docker
+
+- debug:
+    msg: "Stdout: {{login_success.stdout}}"
+  failed_when: login_success.stdout is not search('Succeeded')
+  tags:
+    - login-docker
+
+- block:
+    - name: Restart filebeat container (docker-compose v3)
+      shell: cd {{filebeat_home}} && \
+            env > .env && \
+            docker-compose pull && \
+            docker-compose up -d
+      when: "'elk-clients' in {{group_names}}"
+
+    # - name: Check filebeat logs
+    #   shell: docker logs --tail 10 filebeat
+    #   register: docker_logs
+
+    # - debug:
+    #     msg: "docker logs {{docker_logs.stdout}}"
+
+    - name: check filebeat is running
+      shell: docker ps | grep filebeat | wc -l
+      register: num_filebeat
+      failed_when: num_filebeat.stdout | int < 1
+
+  always:
+    - name: Log out of docker
+      shell: docker logout $DOCKER_URL
+      environment:
+        DOCKER_URL: "{{lookup('env', 'DOCKER_URL')}}"
+
+    - name: Prune docker system
+      shell: docker system prune -f
+

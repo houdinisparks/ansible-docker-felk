@@ -1,0 +1,21 @@
+
+
+# https://www.elastic.co/guide/en/kibana/6.5/monitoring-settings-kb.html
+
+# Default kibana config from kibana-docker
+server.name: kibana
+server.host: "0"
+elasticsearch.url: http://elasticsearch:9200
+
+xpack.monitoring:
+  enabled: true
+  kibana.collection.enabled: true
+  ui:
+    enabled: true
+    container.elasticsearch.enabled: true
+    container.logstash.enabled: true
+
+
+xpack.ml.enabled: false
+xpack.security.enabled: false
+xpack.apm.enabled: false

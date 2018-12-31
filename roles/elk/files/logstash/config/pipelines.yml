@@ -1,0 +1,7 @@
+# ref: https://github.com/elastic/logstash/blob/master/config/pipelines.yml
+
+- pipeline.id: app1-logs
+  path.config: "/usr/share/logstash/pipeline/app1.conf"
+
+- pipeline.id: app2-logs
+  path.config: "/usr/share/logstash/pipeline/app2.conf"

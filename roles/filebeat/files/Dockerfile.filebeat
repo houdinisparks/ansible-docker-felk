@@ -1,0 +1,33 @@
+FROM docker.elastic.co/beats/filebeat:6.5.2
+# Copy our custom configuration file
+
+#d default values
+ARG USER_ID=1001
+ARG GROUP_ID=1001
+ARG DOCKER_GROUP_ID=994
+ARG USER=deploy
+ARG GROUP=deploy
+ARG LOGSTASH_URL
+ARG ELASTICSEARCH_URL
+
+ENV ENV=UNSPECIFIED
+ENV LOGSTASH_URL=${LOGSTASH_URL}
+ENV ELASTICSEARCH_URL=${ELASTICSEARCH_URL}
+
+# configure container permissions
+USER root
+RUN groupadd -g ${GROUP_ID} ${USER} && \
+    groupadd -g ${DOCKER_GROUP_ID} docker && \
+    useradd -l -u ${USER_ID} -g ${GROUP_ID} ${USER} && \
+    usermod -aG docker ${USER}
+
+COPY filebeat.yml /usr/share/filebeat/
+
+# Create a directory to map volume with all docker log files
+RUN mkdir /usr/share/filebeat/dockerlogs
+RUN chown --no-dereference --recursive ${USER}:${GROUP_ID} \
+        /usr/share/filebeat/
+
+RUN chmod -R go-w /usr/share/filebeat/
+
+USER ${USER}

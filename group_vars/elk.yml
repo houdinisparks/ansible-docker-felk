@@ -1,0 +1,23 @@
+user:
+group:
+
+ls_tcp_port: 5044
+es_http_port: 9200
+es_tcp_port: 9300
+kibana_port: 5601
+env: '{{inventory_hostname}}'
+
+elk_home:
+
+# ref: https://github.com/geerlingguy/ansible-role-elasticsearch-curator
+elasticsearch_curator_cron_jobs:
+  - {
+    name: "Run curator to close and delete old elasticsearch indices.",
+    job: "/bin/curator --config {{elk_home}}/elasticsearch/curator_config.yml {{elk_home}}/elasticsearch/curator_action.yml",
+    minute: "0",
+    hour: "1"
+  }
+
+es_image: <image-name>
+ls_image: <image-name>
+kb_image: <image-name>

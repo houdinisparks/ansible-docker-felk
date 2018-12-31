@@ -1,0 +1,77 @@
+version: '3'
+services:
+
+  logstash:
+    image: ${LS_IMAGE}
+    build:
+      context: ${ELK_HOME}/logstash
+      dockerfile: Dockerfile.logstash
+      args:
+        - USER
+        - GROUP
+        - USER_ID
+        - GROUP_ID
+    ports:
+      - "5044:5044"
+      - "5045:5045"
+      - "8080:8080"
+      - "9600:9600"
+
+    volumes:
+      # - "ls-data:/usr/share/logstash/data"
+      - "${ELK_HOME}/logstash/config:/usr/share/logstash/config"
+      - "${ELK_HOME}/logstash/pipeline:/usr/share/logstash/pipeline"
+
+    logging:
+      options:
+        max-size: '50M'
+
+  elasticsearch:
+    image: ${ES_IMAGE}
+    build:
+      context: ${ELK_HOME}/elasticsearch
+      dockerfile: Dockerfile.elasticsearch
+      args:
+        - USER
+        - GROUP
+        - USER_ID
+        - GROUP_ID
+    ports:
+      - "9200:9200" # HTTP requests, JSON interface
+      - "9300:9300" # TCP, transport interface
+
+    volumes:
+      - "es-data:/usr/share/elasticsearch/data"
+      - "${ELK_HOME}/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml"
+
+    logging:
+      options:
+        max-size: '50M'
+  kibana:
+    image: ${KB_IMAGE}
+    build:
+      context: ${ELK_HOME}/kibana
+      dockerfile: Dockerfile.kibana
+      args:
+        - USER
+        - GROUP
+        - USER_ID
+        - GROUP_ID
+    ports:
+      - "5601:5601"
+
+    volumes:
+      - "kb-data:/usr/share/kibana/data"
+      - "${ELK_HOME}/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml"
+
+    logging:
+      options:
+        max-size: '50M'
+volumes:
+  ls-data:
+  es-data:
+  kb-data:
+networks:
+  elk:
+    driver: bridge
+

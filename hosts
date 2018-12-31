@@ -1,0 +1,9 @@
+[elk-clients]
+DEV ansible_ssh_host= remote_user= ansible_ssh_user= ansible_connection=ssh
+
+[elk-clients-old]
+CI ansible_ssh_host= remote_user= ansible_ssh_user= ansible_connection=ssh
+QA ansible_ssh_host= remote_user= ansible_ssh_user= ansible_connection=ssh
+
+[elk]
+ELK ansible_ssh_host= remote_user= ansible_connction=ssh

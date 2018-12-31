@@ -1,0 +1,22 @@
+# app related
+user:
+group:
+
+# docker related
+
+filebeat_home: "{{ app_shared }}/filebeat"
+filebeat_image:
+filebeat_port:
+DOCKER_USER:
+  - centos
+  - "{{user}}"
+
+# #TODO: write in the credentials here
+# kibana_url: "http://10.3.29.54:5601"
+
+# elasticsearch_url: "http://10.3.29.54:9200"
+
+logstash_url:
+elasticsearch_url:
+
+

@@ -1,0 +1,60 @@
+
+- name: Configure and deploy Filebeat on app servers with centos >= 7
+  hosts: elk-clients
+  environment:
+    USER: "{{user}}"
+    GROUP: "{{group}}"
+    FILEBEAT_HOME: "{{filebeat_home}}"
+    APP_LOGS: "{{app_logs}}"
+    ENV: "{{env}}"
+    LOGSTASH_URL: "{{logstash_url}}"
+    ELASTICSEARCH_URL: "{{elasticsearch_url}}"
+    FILEBEAT_IMAGE: "{{filebeat_image}}"
+
+  roles:
+    - filebeat
+  tags:
+    - setup-fb
+
+- name: Configure and deploy Filebeat on app servers with centos < 7
+  hosts: elk-clients-old
+  environment:
+    USER: "{{user}}"
+    GROUP: "{{group}}"
+    FILEBEAT_HOME: "{{filebeat_home}}"
+    APP_LOGS: "{{app_logs}}"
+    ENV: "{{env}}"
+    LOGSTASH_URL: "{{logstash_url}}"
+    ELASTICSEARCH_URL: "{{elasticsearch_url}}"
+    FILEBEAT_IMAGE: "{{filebeat_image}}"
+    DOCKER_API_VERSION: 1.19
+
+  roles:
+    - filebeat-old
+  tags:
+    - setup-fb-old
+
+- name: Configure and deploy ELK
+  hosts: elk
+  become_user: "{{user}}"
+  environment:
+    USER: "{{user}}"
+    GROUP: "{{group}}"
+    ELK_HOME: "{{elk_home}}"
+    ES_IMAGE: "{{es_image}}"
+    LS_IMAGE: "{{ls_image}}"
+    KB_IMAGE: "{{kb_image}}"
+
+  roles:
+    - elk
+  tags:
+    - setup-elk
+
+- name: Setup Curator for indices housekeeping
+  hosts: elk
+  become: yes
+  roles:
+    - geerlingguy.elasticsearch-curator
+  tags:
+    - setup-curator
+    - update-curator

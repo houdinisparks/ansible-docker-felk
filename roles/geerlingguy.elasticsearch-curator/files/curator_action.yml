@@ -1,0 +1,27 @@
+actions:
+  1:
+    action: close
+    description: Close indices with %Y.%m.%d in the name where that date is older than 1 days
+    options:
+      ignore_empty_list: True
+      delete_aliases: True
+    filters:
+    - filtertype: age
+      source: name
+      timestring: '%Y.%m.%d'
+      direction: older
+      unit: days
+      unit_count: 1
+
+  2:
+    action: delete_indices
+    description: Delete indices with %Y.%m.%d in the name where that date is older than 2 days
+    options:
+      ignore_empty_list: True
+    filters:
+    - filtertype: age
+      source: name
+      timestring: '%Y.%m.%d'
+      direction: older
+      unit: days
+      unit_count: 2

@@ -1,0 +1,21 @@
+FROM docker.elastic.co/elasticsearch/elasticsearch:6.5.2
+
+ARG USER_ID=1001
+ARG GROUP_ID=1001
+ARG USER=minion
+ARG GROUP=minion
+
+ENV ES_HOME=/usr/share/elasticsearch
+ENV ElASTICSEARCH_HOME=/usr/share/elasticsearch
+
+# configure container permissions
+RUN groupadd -g ${GROUP_ID} ${GROUP} && \
+    useradd -l -u ${USER_ID} -g ${GROUP} ${USER}
+
+COPY elasticsearch.yml ./config/
+
+RUN chown --no-dereference --recursive ${USER}:${GROUP} \
+        /usr/share/elasticsearch \
+        ./
+
+USER ${USER}

@@ -1,0 +1,30 @@
+- name: copy over logstash files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{user}}"
+    group: "{{group}}"
+    mode: u=rwx,o=rx,g=rx
+  with_items:
+  - { src: "{{role_path}}/files/logstash/config/", dest: "{{elk_home}}/logstash/config/" }
+  - { src: "{{role_path}}/files/logstash/pipeline/", dest: "{{elk_home}}/logstash/pipeline/" }
+
+- name: copy over elasticsearch files
+  copy:
+    src: "{{item}}"
+    dest: "{{elk_home}}/elasticsearch/"
+    owner: "{{user}}"
+    group: "{{group}}"
+    mode: u=rwx,o=rx,g=rx
+  with_fileglob: "{{role_path}}/files/elasticsearch/*"
+
+- name: copy over kibana files
+  copy:
+    src: "{{item}}"
+    dest: "{{elk_home}}/kibana/"
+    owner: "{{user}}"
+    group: "{{group}}"
+    mode: u=rwx,o=rx,g=rx
+  with_fileglob: "{{role_path}}/files/kibana/*"
+
+

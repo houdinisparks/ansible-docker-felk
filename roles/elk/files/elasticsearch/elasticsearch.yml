@@ -1,0 +1,11 @@
+
+# ref: https://www.elastic.co/guide/en/elasticsearch/reference/6.5/monitoring-settings.html
+xpack.monitoring:
+  collection.enabled: true
+  elasticsearch.collection.enabled: true
+
+# default values
+cluster.name: "docker-cluster"
+network.host: 0.0.0.0
+discovery.zen.minimum_master_nodes: 1
+discovery.type: single-node
