@@ -24,15 +24,12 @@
 ```
 
 
-# For ROR Filebeat
+# For Filebeat
 ## To build filebeat docker images and push to repo
 `ansible-playbook build-image.yml -t build-fb -i ./hosts -u <user>`
 
-## To deploy filebeat to DEV, ADAGIO (Centos >= 7) servers
+## To deploy filebeat to DEV CI QA servers
 `ansible-playbook deploy.yml -t setup-fb -i ./hosts -u <user>`
-
-## To deploy filebeat to CI, QA (Centos < 7) servers
-`ansible-playbook deploy.yml -t setup-fb-old -i ./hosts -u <user>`
 
 # For ELK
 ## To build ELK docker images and push to repo
