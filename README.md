@@ -7,7 +7,6 @@
    1) DOCKER_PW
    2) DOCKER_USER
    3) DOCKER_URL
-   4) DOCKER_EMAIL - (this is only used if you are building filebeat on centos < 7)
 
 ## To edit the filebeat/elk config files
 ```
