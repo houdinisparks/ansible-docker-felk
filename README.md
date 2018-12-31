@@ -26,26 +26,26 @@
 
 # For ROR Filebeat
 ## To build filebeat docker images and push to repo
-`ansible-playbook build-image.yml -t build-fb -i ./hosts -u deploy`
+`ansible-playbook build-image.yml -t build-fb -i ./hosts -u <user>`
 
 ## To deploy filebeat to DEV, ADAGIO (Centos >= 7) servers
-`ansible-playbook deploy.yml -t setup-fb -i ./hosts -u deploy`
+`ansible-playbook deploy.yml -t setup-fb -i ./hosts -u <user>`
 
 ## To deploy filebeat to CI, QA (Centos < 7) servers
-`ansible-playbook deploy.yml -t setup-fb-old -i ./hosts -u deploy`
+`ansible-playbook deploy.yml -t setup-fb-old -i ./hosts -u <user>`
 
 # For ELK
 ## To build ELK docker images and push to repo
-`ansible-playbook build-image.yml -t build-elk -i ./hosts -u minion`
+`ansible-playbook build-image.yml -t build-elk -i ./hosts -u <user>`
 
-## To deploy ELK containers to MINION server
-`ansible-playbook deploy.yml -t setup-elk -i ./hosts -u minion`
+## To deploy ELK containers to logging server
+`ansible-playbook deploy.yml -t setup-elk -i ./hosts -u <user>`
 
-## To update ELK configuration files to MINION server
-`ansible-playbook deploy.yml -t update-elk-conf -i ./hosts -u minion`
+## To update ELK configuration files to logging server
+`ansible-playbook deploy.yml -t update-elk-conf -i ./hosts -u <user>`
 
-## To setup ELK curators config files to MINION server
-`ansible-playbook deploy.yml -t setup-curator -i ./hosts -u minion`
+## To setup ELK curators config files to logging server
+`ansible-playbook deploy.yml -t setup-curator -i ./hosts -u <user>`
 
-## To update ELK curators config files to MINION server
-`ansible-playbook deploy.yml -t update-curator -i ./hosts -u minion`
+## To update ELK curators config files to logging server
+`ansible-playbook deploy.yml -t update-curator -i ./hosts -u <user>`

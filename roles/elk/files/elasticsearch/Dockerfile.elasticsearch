@@ -1,9 +1,9 @@
 FROM docker.elastic.co/elasticsearch/elasticsearch:6.5.2
 
-ARG USER_ID=1001
-ARG GROUP_ID=1001
-ARG USER=minion
-ARG GROUP=minion
+ARG USER_ID=
+ARG GROUP_ID=
+ARG USER=
+ARG GROUP=
 
 ENV ES_HOME=/usr/share/elasticsearch
 ENV ElASTICSEARCH_HOME=/usr/share/elasticsearch
