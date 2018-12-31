@@ -1,4 +1,1 @@
-GRANT_ID \d{2}(0?[1-9]|1[012])[A-HJ-Z2-9]{4}
-CR_ID %{GRANT_ID}-CR[0-9]{2}
-CL_ID %{GRANT_ID}-CL[0-9]{2}
 JSON {.*}
