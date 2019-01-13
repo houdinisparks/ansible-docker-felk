@@ -1,4 +1,4 @@
-version: '3'
+version: '3.2'
 services:
 
   logstash:
@@ -14,18 +14,28 @@ services:
     ports:
       - "5044:5044"
       - "5045:5045"
+      - "12201:12201/udp"
       - "8080:8080"
       - "9600:9600"
 
     volumes:
       # - "ls-data:/usr/share/logstash/data"
-      - "${ELK_HOME}/logstash/config:/usr/share/logstash/config"
+      - "${ELK_HOME}/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml"
+      - "${ELK_HOME}/logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml"
       - "${ELK_HOME}/logstash/pipeline:/usr/share/logstash/pipeline"
 
     logging:
       options:
         max-size: '50M'
+    environment:
+      LS_JAVA_OPTS: -Xms1g -Xmx1g
 
+    networks:
+      - elk
+
+    deploy:
+      mode: replicated
+      replicas: 1
   elasticsearch:
     image: ${ES_IMAGE}
     build:
@@ -37,8 +47,7 @@ services:
         - USER_ID
         - GROUP_ID
     ports:
-      - "9200:9200" # HTTP requests, JSON interface
-      - "9300:9300" # TCP, transport interface
+      - "9200:9200"
 
     volumes:
       - "es-data:/usr/share/elasticsearch/data"
@@ -47,6 +56,39 @@ services:
     logging:
       options:
         max-size: '50M'
+    networks:
+      - elk
+    environment:
+      ES_JAVA_OPTS: -Xms1g -Xmx1g
+    deploy:
+      mode: replicated
+      replicas: 1
+      endpoint_mode: dnsrr
+  elasticsearch2:
+    image: ${ES_IMAGE}
+    build:
+      context: ${ELK_HOME}/elasticsearch
+      dockerfile: Dockerfile.elasticsearch
+      args:
+        - USER
+        - GROUP
+        - USER_ID
+        - GROUP_ID
+    volumes:
+      - "es-data2:/usr/share/elasticsearch/data"
+      - "${ELK_HOME}/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml"
+
+    logging:
+      options:
+        max-size: '50M'
+    networks:
+      - elk
+    environment:
+      ES_JAVA_OPTS: -Xms1g -Xmx1g
+    deploy:
+      mode: replicated
+      replicas: 1
+      endpoint_mode: dnsrr
   kibana:
     image: ${KB_IMAGE}
     build:
@@ -67,9 +109,15 @@ services:
     logging:
       options:
         max-size: '50M'
+    networks:
+      - elk
+    deploy:
+      mode: replicated
+      replicas: 1
 volumes:
   ls-data:
   es-data:
+  es-data2:
   kb-data:
 networks:
   elk:

@@ -31,6 +31,9 @@
 ## To deploy filebeat to DEV CI QA servers
 `ansible-playbook deploy.yml -t setup-fb -i ./hosts -u <user>`
 
+## To update filebeat to DEV CI QA servers
+`ansible-playbook deploy.yml -t update-fb-conf -i ./hosts -u <user>`
+
 # For ELK
 ## To build ELK docker images and push to repo
 `ansible-playbook build-image.yml -t build-elk -i ./hosts -u <user>`
