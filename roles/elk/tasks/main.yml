@@ -2,26 +2,30 @@
   file:
     path: '{{item.name}}'
     state: directory
-    owner: "{{remote_user}}"
-    group: "{{remote_user}}"
+    owner: "{{user}}"
+    group: "{{group}}"
     mode: '{{item.mode}}'
+  become: yes
   with_items:
     - {name: '{{elk_home}}', mode: 'u=rwx,o=rx,g=rx'} # rwx-r-xr-x
   tags:
     - create-dirs-elk
 
-- name: Set up environment variables
-  include: set-vars.yml
+- name: Set up user and group ids
+  become: yes
+  import_tasks: set-ids.yml
   tags:
-    - set-envs
+    - set-ids
 
 - name: Setup conf files
-  include: elk-conf.yml
+  become: yes
+  import_tasks: elk-conf.yml
   tags:
     - update-elk-conf
 
 - name: Run containers
-  include: docker-setup.yml
+  become: yes
+  import_tasks: docker-setup.yml
 
 
 # - name: Remove old containers and images

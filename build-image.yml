@@ -1,4 +1,4 @@
-- name: Build filebeat images and upload for ror servers
+- name: Build filebeat images and upload for app servers
   hosts: elk-clients
 
   environment:
@@ -16,7 +16,7 @@
   tags:
     - build-fb
 
-- name: Build ELK images and upload for minion server
+- name: Build ELK images and upload for ELK server
   hosts: elk
   environment:
     USER: "{{user}}"

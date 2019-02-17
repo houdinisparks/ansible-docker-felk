@@ -1,3 +1,16 @@
+- name: ensuring group "{{user}}" exists
+  group:
+    name: "{{group}}"
+    gid: "{{group_id}}"
+    state: present
+
+- name: ensuring user {{user}}" exists and added into group
+  user:
+    uid: "{{user_id}}"
+    group: "{{group}}"
+    name: "{{user}}"
+    state: present
+
 - name: Get user id
   shell: id -u {{ user }}
   register: user_id

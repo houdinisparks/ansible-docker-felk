@@ -3,8 +3,8 @@ FROM docker.elastic.co/logstash/logstash:6.5.2
 
 ARG USER_ID=1001
 ARG GROUP_ID=1001
-ARG USER=
-ARG GROUP=
+ARG USER=elk
+ARG GROUP=elk
 
 USER root
 

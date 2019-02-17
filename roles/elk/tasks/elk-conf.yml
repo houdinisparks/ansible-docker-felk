@@ -8,6 +8,7 @@
   with_items:
   - { src: "{{role_path}}/files/logstash/config/", dest: "{{elk_home}}/logstash/config/" }
   - { src: "{{role_path}}/files/logstash/pipeline/", dest: "{{elk_home}}/logstash/pipeline/" }
+  - { src: "{{role_path}}/files/logstash/Dockerfile.logstash", dest: "{{elk_home}}/logstash/Dockerfile.logstash" }
 
 - name: copy over elasticsearch files
   copy:

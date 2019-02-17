@@ -1,9 +1,12 @@
 user: elk
+user_id: 1001
 group: elk
+group_id: 1001
 app_logs: <path of where your app logs are at>
 
-filebeat_home: "/home/{{user}}/filebeat"
-filebeat_image: my-own-filebeat:latest
+# filebeat_home: "/home/{{user}}/filebeat"
+filebeat_home: "/Users/a662176/filebeat"
+filebeat_image: <your-docker-user>/my-own-filebeat:latest
 
-logstash_url: <target ip of your logstash instance>
-elasticsearch_url: <target ip of your elasticsearch instance>
+logstash_url: <ip:port>
+elasticsearch_url:<ip:port>

@@ -1,12 +1,16 @@
-- name: Set up environment variables
-  include: set-vars.yml
+
+- name: Set up user and group ids
+  become: yes
+  import_tasks: set-ids.yml
   tags:
-    - set-envs
+    - set-ids
 
 - name: Build docker image
   shell: cd {{role_path}}/files && \
          docker-compose build
   environment:
+    USER: "{{user}}"
+    GROUP: "{{group}}"
     USER_ID: "{{user_id.stdout}}"
     GROUP_ID: "{{group_id.stdout}}"
   delegate_to: localhost

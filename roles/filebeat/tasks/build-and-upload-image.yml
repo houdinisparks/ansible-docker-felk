@@ -1,12 +1,15 @@
 - name: Set up user id and group id environment variables for container
-  include: set-vars.yml
+  import_tasks: set-ids.yml
+
   tags:
-    - set-envs
+    - set-ids
 
 - name: Build docker image
   shell: cd {{role_path}}/files && \
          docker-compose build
   environment:
+    USER: "{{user}}"
+    GROUP: "{{group}}"
     USER_ID: "{{user_id.stdout}}"
     GROUP_ID: "{{group_id.stdout}}"
     DOCKER_GROUP_ID: "{{docker_group_id.stdout}}"

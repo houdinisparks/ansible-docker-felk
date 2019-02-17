@@ -1,5 +1,5 @@
 
-- name: Configure and deploy Filebeat on app servers
+- name: Configure and deploy Filebeat on APP servers
   hosts: elk-clients
   environment:
     USER: "{{user}}"
@@ -10,6 +10,9 @@
     LOGSTASH_URL: "{{logstash_url}}"
     ELASTICSEARCH_URL: "{{elasticsearch_url}}"
     FILEBEAT_IMAGE: "{{filebeat_image}}"
+    DOCKER_PW: "{{lookup('env','DOCKER_PW')}}"
+    DOCKER_USER: "{{lookup('env' , 'DOCKER_USER')}}"
+    DOCKER_URL: "{{lookup('env', 'DOCKER_URL')}}"
 
   roles:
     - filebeat
@@ -26,6 +29,9 @@
     ES_IMAGE: "{{es_image}}"
     LS_IMAGE: "{{ls_image}}"
     KB_IMAGE: "{{kb_image}}"
+    DOCKER_PW: "{{lookup('env','DOCKER_PW')}}"
+    DOCKER_USER: "{{lookup('env' , 'DOCKER_USER')}}"
+    DOCKER_URL: "{{lookup('env', 'DOCKER_URL')}}"
 
   roles:
     - elk
@@ -34,6 +40,7 @@
 
 - name: Setup Curator for indices housekeeping
   hosts: elk
+  become: yes
   roles:
     - geerlingguy.elasticsearch-curator
   tags:

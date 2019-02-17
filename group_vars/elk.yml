@@ -1,5 +1,7 @@
 user: elk
+user_id: 1001
 group: elk
+group_id: 1001
 
 env: '{{inventory_hostname}}'
 
@@ -14,6 +16,6 @@ elasticsearch_curator_cron_jobs:
     hour: "1"
   }
 
-es_image: my-own-es:latest
-ls_image: my-own-ls:latest
-kb_image: my-own-kb:latest
+es_image: <your-docker-user>/my-own-es:latest
+ls_image: <your-docker-user>/my-own-ls:latest
+kb_image: <your-docker-user>/my-own-kb:latest

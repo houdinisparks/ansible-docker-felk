@@ -1,10 +1,5 @@
 
 
-- name: Set up environment variables
-  include: set-vars.yml
-  tags:
-    - set-envs
-
 - name: Create filebeat home directory
   file:
     path: "{{ filebeat_home }}"
@@ -12,17 +7,27 @@
     owner: "{{user}}"
     group: "{{group}}"
     state: directory
+  become: yes`
   tags:
     - create-dirs-fb
+
+- name: Set up user and group ids
+  become: yes
+  import_tasks: set-ids.yml
+  tags:
+    - set-ids
 
 - name: Copy over filebeat configuration file
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
+    owner: "{{ user }}"
+    group: "{{ group }}"
     mode: u=rwx,o=rx,g=rx
   with_items:
     - { src: "{{role_path}}/files/filebeat.yml", dest: "{{ filebeat_home }}/" }
     - { src: "{{role_path}}/files/docker-compose.yml", dest: "{{ filebeat_home }}/" }
+  become: yes
   notify:
     - restart docker
   tags:
@@ -58,14 +63,8 @@
             env > .env && \
             docker-compose pull && \
             docker-compose up -d
+      become_user: "{{ user }}"
       when: "'elk-clients' in {{group_names}}"
-
-    # - name: Check filebeat logs
-    #   shell: docker logs --tail 10 filebeat
-    #   register: docker_logs
-
-    # - debug:
-    #     msg: "docker logs {{docker_logs.stdout}}"
 
     - name: check filebeat is running
       shell: docker ps | grep filebeat | wc -l
