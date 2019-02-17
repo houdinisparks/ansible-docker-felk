@@ -3,10 +3,12 @@
 ## Before you run the ansible scripts
 1) Make sure the variables set in ./group_vars are correctly defined.
 2) Sensitive variables below have to exist as environment variables within the shell running the script.
-   (You can create a .bashrc file in your cloned repo and export these variables first.)
+   (You can create a .bashrc file and do a `source .bashrc` in your cloned repo and export these variables first.)
    1) DOCKER_PW
    2) DOCKER_USER
    3) DOCKER_URL
+
+
 
 ## To edit the filebeat/elk config files
 ```
@@ -34,7 +36,7 @@
 ## To update filebeat to DEV CI QA servers
 `ansible-playbook deploy.yml -t update-fb-conf -i ./hosts -u <user>`
 
-# For ELK
+# For 2-Node Elasticsearch in ELK
 ## To build ELK docker images and push to repo
 `ansible-playbook build-image.yml -t build-elk -i ./hosts -u <user>`
 

@@ -7,14 +7,13 @@ services:
       context: ${ELK_HOME}/logstash
       dockerfile: Dockerfile.logstash
       args:
-        - USER
-        - GROUP
-        - USER_ID
-        - GROUP_ID
+        - USER=${USER:-elk}
+        - GROUP=${GROUP:-elk}
+        - USER_ID=${USER_ID:-1001}
+        - GROUP_ID=${GROUP_ID:-1001}
     ports:
       - "5044:5044"
       - "5045:5045"
-      - "12201:12201/udp"
       - "8080:8080"
       - "9600:9600"
 
@@ -33,9 +32,6 @@ services:
     networks:
       - elk
 
-    deploy:
-      mode: replicated
-      replicas: 1
   elasticsearch:
     image: ${ES_IMAGE}
     build:
@@ -60,10 +56,6 @@ services:
       - elk
     environment:
       ES_JAVA_OPTS: -Xms1g -Xmx1g
-    deploy:
-      mode: replicated
-      replicas: 1
-      endpoint_mode: dnsrr
   elasticsearch2:
     image: ${ES_IMAGE}
     build:
@@ -85,10 +77,6 @@ services:
       - elk
     environment:
       ES_JAVA_OPTS: -Xms1g -Xmx1g
-    deploy:
-      mode: replicated
-      replicas: 1
-      endpoint_mode: dnsrr
   kibana:
     image: ${KB_IMAGE}
     build:
@@ -111,9 +99,6 @@ services:
         max-size: '50M'
     networks:
       - elk
-    deploy:
-      mode: replicated
-      replicas: 1
 volumes:
   ls-data:
   es-data:

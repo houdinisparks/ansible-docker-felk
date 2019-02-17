@@ -1,13 +1,9 @@
-user:
-group:
+user: elk
+group: elk
 
-ls_tcp_port: 5044
-es_http_port: 9200
-es_tcp_port: 9300
-kibana_port: 5601
 env: '{{inventory_hostname}}'
 
-elk_home:
+elk_home: '/home/{{user}}/elk'
 
 # ref: https://github.com/geerlingguy/ansible-role-elasticsearch-curator
 elasticsearch_curator_cron_jobs:
@@ -18,6 +14,6 @@ elasticsearch_curator_cron_jobs:
     hour: "1"
   }
 
-es_image: <image-name>
-ls_image: <image-name>
-kb_image: <image-name>
+es_image: my-own-es:latest
+ls_image: my-own-ls:latest
+kb_image: my-own-kb:latest

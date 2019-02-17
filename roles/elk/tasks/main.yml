@@ -20,7 +20,7 @@
   tags:
     - update-elk-conf
 
-- name: Template the docker file and run containers
+- name: Run containers
   include: docker-setup.yml
 
 

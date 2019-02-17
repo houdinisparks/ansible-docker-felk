@@ -34,7 +34,6 @@
 
 - name: Setup Curator for indices housekeeping
   hosts: elk
-  become: yes
   roles:
     - geerlingguy.elasticsearch-curator
   tags:

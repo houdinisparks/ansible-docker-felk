@@ -4,7 +4,7 @@ services:
     image: ${FILEBEAT_IMAGE}
     container_name: filebeat
     build:
-      context: ${FILEBEAT_BUILD_PATH}
+      context: .
       dockerfile: Dockerfile.filebeat
       args:
         - USER_ID
@@ -12,8 +12,6 @@ services:
         - DOCKER_GROUP_ID
         - USER
         - GROUP
-        - LOGSTASH_URL
-        - ELASTICSEARCH_URL
 
     volumes:
       - "${APP_LOGS}:/usr/share/filebeat/dockerlogs:ro"        #ro-read only

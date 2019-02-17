@@ -15,24 +15,5 @@
     USER_ID: "{{user_id.stdout}}"
     GROUP_ID: "{{group_id.stdout}}"
 
-- name: ensure ports are open and elk is running
-  shell: nc -z -w5 127.0.0.1 {{ item }}
-  with_items:
-   - "{{ ls_tcp_port }}"
-   - "{{ es_http_port }}"
-   - "{{ es_tcp_port }}"
-   - "{{ kibana_port }}"
-
-  register: http_check
-  until: http_check.rc == 0
-  failed_when: http_check.rc == 1
-  retries: 4
-  delay: 15
-  tags:
-    - http_check
-
-- debug:
-    var: http_check
-
 - name: Prune docker system
   shell: docker system prune -f

@@ -9,7 +9,6 @@
   environment:
     USER_ID: "{{user_id.stdout}}"
     GROUP_ID: "{{group_id.stdout}}"
-    DOCKER_GROUP_ID: "{{docker_group_id.stdout}}"
   delegate_to: localhost
 
 # note this cmd expects credentials to already be saved somewhere

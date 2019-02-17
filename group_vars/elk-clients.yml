@@ -1,17 +1,9 @@
-# app related
-user:
-group:
+user: elk
+group: elk
+app_logs: <path of where your app logs are at>
 
-# docker related
+filebeat_home: "/home/{{user}}/filebeat"
+filebeat_image: my-own-filebeat:latest
 
-filebeat_home: "{{ app_shared }}/filebeat"
-filebeat_image:
-filebeat_port:
-DOCKER_USER:
-  - centos
-  - "{{user}}"
-
-logstash_url:
-elasticsearch_url:
-
-
+logstash_url: <target ip of your logstash instance>
+elasticsearch_url: <target ip of your elasticsearch instance>

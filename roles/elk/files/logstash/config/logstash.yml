@@ -1,12 +1,14 @@
 # ref: https://github.com/elastic/logstash/blob/master/config/logstash.yml
 
-http.host: "0.0.0.0"
+http.host: "0.0.0.0" # listen on all interfaces
 http.port: 9600
-config.reload.automatic: true
-#============================== Xpack Monitoring ===============================
+config.reload.automatic: true # reloads logstash service any .conf or .yml file changes
 
 # ref: https://www.elastic.co/guide/en/logstash/current/persistent-queues.html
 queue.type: persisted
+
+#============================== Xpack Monitoring ===============================
+
 xpack.monitoring:
   enabled: true
   elasticsearch:

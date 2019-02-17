@@ -18,18 +18,6 @@ filebeat.inputs:
     negate: true
     match: after
 
-#============================= Filebeat modules ===============================
-filebeat.config.inputs:
-  enabled: true
-  path: ${path.config}/custom/*.yml
-  reload.enabled: true
-  reload.period: 3s
-
-  # Glob pattern for configuration loading
-  # path.config defaults to path.home =  /usr/share/filebeat/config
-
-  # Set to true to enable config reloading
-
 #============================= Filebeat processors ============================
 
 processors:
@@ -49,37 +37,9 @@ name: ${HOSTNAME}
 logging.to_files: true
 logging.to_syslog: false
 
-# #============================== Kibana =====================================
-
-# # Starting with Beats version 6.0.0, the dashboards are loaded via the Kibana API.
-# # This requires a Kibana endpoint configuration.
-
-# setup.kibana:
-# # if your kibana is local you can change it to 127.0.0.1:80
-#   host: "{{ kibana_url}}"
-#   protocol: "http"
-# # identification required for X-pack
-#   # username: "{{ kibana_user }}"
-#   # password: " {{kibana_pw }}"
-# # path needed if kibana not at website root
-
-#================================ Outputs =====================================
-
-# Configure what output to use when sending the data collected by the beat.
-
 #----------------------------- Logstash output --------------------------------
 output.logstash:
   hosts: ["${LOGSTASH_URL}"]
-
-  # Optional SSL. By default is off.
-  # List of root certificates for HTTPS server verifications
-  #ssl.certificate_authorities: ["/etc/pki/root/ca.pem"]
-
-  # Certificate for SSL client authentication
-  #ssl.certificate: "/etc/pki/client/cert.pem"
-
-  # Client Certificate Key
-  #ssl.key: "/etc/pki/client/cert.key"
 
 #============================== Xpack Monitoring ===============================
 # Filebeat can export internal metrics to a central Elasticsearch monitoring

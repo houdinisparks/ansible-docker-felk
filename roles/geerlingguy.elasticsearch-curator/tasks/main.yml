@@ -20,6 +20,7 @@
     day: "{{ item.day | default('*') }}"
     weekday: "{{ item.weekday | default('*') }}"
     month: "{{ item.month | default('*') }}"
+    user: "{{ user }}"
   with_items: "{{ elasticsearch_curator_cron_jobs }}"
 
 - name: Add curator file to host
