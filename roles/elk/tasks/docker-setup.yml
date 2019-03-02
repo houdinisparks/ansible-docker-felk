@@ -7,6 +7,7 @@
     mode: u=rwx,o=rx,g=rx
   with_items:
   - { src: ./docker-compose.yml, dest: "{{elk_home}}/" }
+  notify: docker-compose file update
   tags:
     - update-elk-conf
 
@@ -23,9 +24,11 @@
   tags:
     - login-docker
 
+- name: check that docker is running
+  import_tasks: check-docker-service.yml
+
 - name: run elasticsearch, kibanaz and logstashz
   shell: cd {{ elk_home }} && \
-         env > .env && \
          docker-compose up -d
   become_user: "{{user}}"
   environment:

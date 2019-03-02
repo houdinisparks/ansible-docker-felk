@@ -1,4 +1,4 @@
-- name: copy over logstash files
+- name: copy over logstash yml + jvm.options files
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -7,8 +7,17 @@
     mode: u=rwx,o=rx,g=rx
   with_items:
   - { src: "{{role_path}}/files/logstash/config/", dest: "{{elk_home}}/logstash/config/" }
+  notify: restart logstash
+
+- name: copy over logstash conf files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{user}}"
+    group: "{{group}}"
+    mode: u=rwx,o=rx,g=rx
+  with_items:
   - { src: "{{role_path}}/files/logstash/pipeline/", dest: "{{elk_home}}/logstash/pipeline/" }
-  - { src: "{{role_path}}/files/logstash/Dockerfile.logstash", dest: "{{elk_home}}/logstash/Dockerfile.logstash" }
 
 - name: copy over elasticsearch files
   copy:
@@ -27,5 +36,4 @@
     group: "{{group}}"
     mode: u=rwx,o=rx,g=rx
   with_fileglob: "{{role_path}}/files/kibana/*"
-
-
+  notify: restart kibana

@@ -1,3 +1,7 @@
 - name: restart docker
   shell: cd {{filebeat_home}} && \
          docker restart filebeat
+
+- name: docker-compose up
+  shell: cd {{filebeat_home}} && \
+         docker-compose up -d

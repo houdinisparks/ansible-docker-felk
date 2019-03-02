@@ -4,12 +4,28 @@
     gid: "{{group_id}}"
     state: present
 
-- name: ensuring user {{user}}" exists and added into group
+- name: ensuring docker group exists
+  group:
+    name: docker
+    state: present
+
+# - name: ensuring user {{user}} exists and added into group
+#   user:
+#     uid: "{{user_id}}"
+#     groups: "{{group}}, docker"
+#     name: "{{user}}"
+#     state: present
+#     append: yes
+#   become: yes
+
+
+- name: ensuring user {{user}} exists and added into group
   user:
     uid: "{{user_id}}"
     group: "{{group}}"
     name: "{{user}}"
     state: present
+  become: yes
 
 - name: Get user id
   shell: id -u {{ user }}
@@ -23,7 +39,13 @@
   tags:
     - get-ids
 
+- name: Get docker group id
+  shell: 'bash -c "cut -d: -f3 < <(getent group docker)"'
+  register: docker_group_id
+  tags:
+    - get-ids
+
 - debug:
-    msg: "user_id: {{user_id.stdout}}, group_id: {{group_id.stdout}}"
+    msg: "user_id: {{user_id.stdout}}, group_id: {{group_id.stdout}}, docker_group_id: {{docker_group_id.stdout}}"
   tags:
     - get-ids

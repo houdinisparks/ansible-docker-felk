@@ -3,11 +3,11 @@
 - name: Create filebeat home directory
   file:
     path: "{{ filebeat_home }}"
-    mode: u+rwx,o+rx,g+rx
+    mode: u=rwx,o=rx,g=rx
     owner: "{{user}}"
     group: "{{group}}"
     state: directory
-  become: yes`
+  become: yes
   tags:
     - create-dirs-fb
 
@@ -21,17 +21,26 @@
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    owner: "{{ user }}"
-    group: "{{ group }}"
     mode: u=rwx,o=rx,g=rx
   with_items:
     - { src: "{{role_path}}/files/filebeat.yml", dest: "{{ filebeat_home }}/" }
-    - { src: "{{role_path}}/files/docker-compose.yml", dest: "{{ filebeat_home }}/" }
-  become: yes
   notify:
     - restart docker
   tags:
     - update-fb-conf
+
+- name: Copy over filebeat docker-compose file
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: u=rwx,o=rx,g=rx
+  with_items:
+    - { src: "{{role_path}}/files/docker-compose.yml", dest: "{{ filebeat_home }}/" }
+  notify:
+    - docker-compose up
+  tags:
+    - update-fb-conf
+
 
 - debug:
     msg: "{{ group_names }}"
@@ -57,14 +66,27 @@
   tags:
     - login-docker
 
+- name: check that docker is running
+  import_tasks: check-docker-service.yml
+
 - block:
+
     - name: Restart filebeat container (docker-compose v3)
-      shell: cd {{filebeat_home}} && \
-            env > .env && \
+      shell: cd {{ filebeat_home }} && \
             docker-compose pull && \
             docker-compose up -d
+      become: yes
       become_user: "{{ user }}"
       when: "'elk-clients' in {{group_names}}"
+
+    # - name: Restart filebeat container (docker-compose v3)
+    #   shell: env > .env && \
+    #         docker-compose pull && \
+    #         docker-compose up -d
+    #   args:
+    #     chdir: "{{ filebeat_home }}"w
+    #   become: yes
+    #   when: "'elk-clients' in {{group_names}}"
 
     - name: check filebeat is running
       shell: docker ps | grep filebeat | wc -l

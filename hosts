@@ -1,5 +1,5 @@
 [elk-clients]
-DEV ansible_ssh_host= ansible_connection=ssh
+DEV ansible_ssh_host= ansible_connection=ssh ansible_user=centos
 
 [elk]
-ELK ansible_ssh_host= ansible_connction=ssh
+ELK ansible_ssh_host= ansible_connction=ssh ansible_user=centos

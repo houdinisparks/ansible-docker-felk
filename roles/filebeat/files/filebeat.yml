@@ -28,10 +28,10 @@ processors:
 # Optional fields that you can specify to add additional information to the
 # output.
 fields:
-  env: ${ ENV}
+  env: ${ENV:UNSPECIFIED}
 
-hostname: ${HOSTNAME}
-name: ${HOSTNAME}
+hostname: ${HOSTNAME:FILEBEAT}
+name: ${HOSTNAME:FILEBEAT}
 
 # Write Filebeat own logs only to file to avoid catching them with itself in docker log files
 logging.to_files: true

@@ -12,14 +12,14 @@
     - create-dirs-elk
 
 - name: Set up user and group ids
-  become: yes
   import_tasks: set-ids.yml
+  become: yes
   tags:
     - set-ids
 
 - name: Setup conf files
-  become: yes
   import_tasks: elk-conf.yml
+  become: yes
   tags:
     - update-elk-conf
 

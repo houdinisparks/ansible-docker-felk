@@ -4,12 +4,19 @@
     gid: "{{group_id}}"
     state: present
 
+- name: ensuring docker group exists
+  group:
+    name: docker
+    state: present
+
 - name: ensuring user {{user}}" exists and added into group
   user:
     uid: "{{user_id}}"
-    group: "{{group}}"
+    groups: "{{group}}, docker"
     name: "{{user}}"
     state: present
+    append: yes
+  become: yes
 
 - name: Get user id
   shell: id -u {{ user }}

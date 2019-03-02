@@ -31,7 +31,7 @@
 `ansible-playbook build-image.yml -t build-fb -i ./hosts -u <user>`
 
 ## To deploy filebeat to DEV CI QA servers
-`ansible-playbook deploy.yml -t setup-fb -i ./hosts -u <user>`
+`ansible-playbook deploy.yml -t deploy-fb -i ./hosts -u <user>`
 
 ## To update filebeat to DEV CI QA servers
 `ansible-playbook deploy.yml -t update-fb-conf -i ./hosts -u <user>`
@@ -41,7 +41,7 @@
 `ansible-playbook build-image.yml -t build-elk -i ./hosts -u <user>`
 
 ## To deploy ELK containers to logging server
-`ansible-playbook deploy.yml -t setup-elk -i ./hosts -u <user>`
+`ansible-playbook deploy.yml -t deploy-elk -i ./hosts -u <user>`
 
 ## To update ELK configuration files to logging server
 `ansible-playbook deploy.yml -t update-elk-conf -i ./hosts -u <user>`

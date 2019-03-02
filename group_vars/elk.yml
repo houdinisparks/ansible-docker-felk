@@ -5,7 +5,7 @@ group_id: 1001
 
 env: '{{inventory_hostname}}'
 
-elk_home: '/home/{{user}}/elk'
+elk_home: '/app/elk'
 
 # ref: https://github.com/geerlingguy/ansible-role-elasticsearch-curator
 elasticsearch_curator_cron_jobs:

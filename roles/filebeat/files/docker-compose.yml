@@ -17,7 +17,6 @@ services:
       - "${APP_LOGS}:/usr/share/filebeat/dockerlogs:ro"        #ro-read only
       - "filebeat_data:/usr/share/filebeat/data:rw"                 #needed to persist filebeat tracking data
       - "/var/run/docker.sock:/var/run/docker.sock"
-      - "${FILEBEAT_HOME}/custom:/usr/share/filebeat/custom:rw"
       - "${FILEBEAT_HOME}/filebeat.yml:/usr/share/filebeat/filebeat.yml:rw"
 
     environment:

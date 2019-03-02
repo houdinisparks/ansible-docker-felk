@@ -1,0 +1,15 @@
+- name: restart logstash
+  shell: cd {{elk_home}} && \
+         docker-compose restart logstash
+
+- name: restart elasticsearch
+  shell: cd {{elk_home}} && \
+         docker-compose restart elasticsearch
+
+- name: restart kibana
+  shell: cd {{elk_home}} && \
+         docker-compose restart kibana
+
+- name: docker-compose file update
+  shell: cd {{elk_home}} && \
+         docker-compose up -d

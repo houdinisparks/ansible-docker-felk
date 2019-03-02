@@ -5,3 +5,6 @@
 
 - pipeline.id: app2-logs
   path.config: "/usr/share/logstash/pipeline/app2.conf"
+
+- pipeline.id: gelf-logs
+  path.config: "/usr/share/logstash/pipeline/gelf.conf"

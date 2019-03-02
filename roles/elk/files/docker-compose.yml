@@ -12,10 +12,11 @@ services:
         - USER_ID=${USER_ID:-1001}
         - GROUP_ID=${GROUP_ID:-1001}
     ports:
-      - "5044:5044"
       - "5045:5045"
+      - "5046:5046"
       - "8080:8080"
       - "9600:9600"
+      - "12201:12201/udp"
 
     volumes:
       # - "ls-data:/usr/share/logstash/data"

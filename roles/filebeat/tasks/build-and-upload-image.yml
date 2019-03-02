@@ -1,6 +1,6 @@
 - name: Set up user id and group id environment variables for container
+  become: yes
   import_tasks: set-ids.yml
-
   tags:
     - set-ids
 

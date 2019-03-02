@@ -6,6 +6,7 @@ config.reload.automatic: true # reloads logstash service any .conf or .yml file 
 
 # ref: https://www.elastic.co/guide/en/logstash/current/persistent-queues.html
 queue.type: persisted
+queue.checkpoint.writes: 1
 
 #============================== Xpack Monitoring ===============================
 

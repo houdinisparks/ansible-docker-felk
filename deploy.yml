@@ -17,11 +17,10 @@
   roles:
     - filebeat
   tags:
-    - setup-fb
+    - deploy-fb
 
 - name: Configure and deploy ELK
   hosts: elk
-  become_user: "{{user}}"
   environment:
     USER: "{{user}}"
     GROUP: "{{group}}"
@@ -36,7 +35,7 @@
   roles:
     - elk
   tags:
-    - setup-elk
+    - deploy-elk
 
 - name: Setup Curator for indices housekeeping
   hosts: elk
