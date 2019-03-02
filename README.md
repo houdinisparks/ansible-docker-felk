@@ -1,5 +1,5 @@
 # Deploy ELK Stack using Ansible
-[Link to Medium Article](https://https://medium.com/@houdinisparks/comprehensive-guide-to-deploy-a-elk-stack-in-containers-using-ansible-50b5aae59eea)
+[Link to Medium Article](https://medium.com/@houdinisparks/comprehensive-guide-to-deploy-a-elk-stack-in-containers-using-ansible-50b5aae59eea)
 
 ## Before you run the ansible scripts
 1) Make sure the variables set in ./group_vars are correctly defined.
