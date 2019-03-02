@@ -7,5 +7,6 @@ xpack.monitoring:
 # default values
 cluster.name: "docker-cluster"
 network.host: 0.0.0.0
-discovery.zen.minimum_master_nodes: 1
-discovery.type: single-node
+node.master: true
+discovery.zen.minimum_master_nodes: 2
+discovery.zen.ping.unicast.hosts: ['elasticsearch']
